@@ -1,0 +1,12 @@
+{application, ssdb,
+ [
+  {description, "ssdb client"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { ssdb_app, []}},
+  {env, []}
+ ]}.
