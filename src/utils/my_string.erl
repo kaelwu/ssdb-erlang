@@ -22,8 +22,15 @@ split(List) ->
       Start = 6,
 %%       Len标示结果集的长度的长度，Res标示结果集的长度 详情参考ssdb协议
       {Len, ResLen} = getMsgLen(List, Start, []),
-      Res = lists:sublist(List, 5 + Len + 2, ResLen),
-      {ok, Res};
+      case ResLen of
+        0 ->
+          {ok, ok};
+        _ ->
+          %% 除去最后两个\n以及去除包头信息.这里多个信息时候有问题 需要改进.
+          AllLen = lists:flatlength(List),
+          Res = lists:sublist(List, 5 + Len + 2, AllLen - 8 - Len),
+          {ok, Res}
+      end;
     "no_found" ->
       not_found;
     _ ->
@@ -36,7 +43,12 @@ getMsgLen(List, Start, L) ->
   case Tmp of
     "\n" ->
       Len = lists:flatlength(L),
-      {Len, list_to_integer(L)};
+      case L of
+        [] ->
+          {0, 0};
+        _ ->
+          {Len, list_to_integer(L)}
+      end;
     _ ->
       getMsgLen(List, Start + 1, NewL)
   end.

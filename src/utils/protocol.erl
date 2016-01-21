@@ -18,6 +18,7 @@ serialize(SendMsg) ->
 
 
 deserialization(RecvMsg) ->
+  lager:info("receive info is ~p\n", [RecvMsg]),
   case RecvMsg of
     {ok, Bin} ->
       Res = splitMsgForSSDB(Bin),

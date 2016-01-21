@@ -8,5 +8,5 @@
                   stdlib
                  ]},
   {mod, { ssdb_app, []}},
-  {env, []}
+  {env, [{host, "127.0.0.1"}, {port, 8888}]}
  ]}.
